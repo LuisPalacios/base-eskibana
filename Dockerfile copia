@@ -6,15 +6,8 @@
 #
 # Desde donde parto...
 #
-
-#
-# Docker empezó a reemplazar imágenes 'dockerfile' con alternativas
-# oficiales, así que he decidido integrar oracle-java7 dentro de mi Dockerfile
-# Antiguo: 
-#  FROM dockerfile/java:oracle-java7
-#
-# Pull base image.
-FROM dockerfile/ubuntu
+#FROM debian:jessie
+FROM dockerfile/java:oracle-java7
 
 # Autor de este Dockerfile
 #
@@ -23,7 +16,7 @@ MAINTAINER Luis Palacios <luis@luispa.com>
 # Pido que el frontend de Debian no sea interactivo
 ENV DEBIAN_FRONTEND noninteractive
 
-# Instalo lo mínimo necesario para que funcione mi contenedor..
+# Actualizo el sistema operativo e instalo lo mínimo
 #
 RUN apt-get update && \
     apt-get -y install 	locales \
@@ -54,26 +47,6 @@ RUN echo "Europe/Madrid" > /etc/timezone; dpkg-reconfigure -f noninteractive tzd
 # ------- ------- ------- ------- ------- ------- -------
 #
 WORKDIR /
-
-# ------- ------- ------- ------- ------- ------- -------
-# Instalo java
-# ------- ------- ------- ------- ------- ------- -------
-#
-# Instalo Java
-RUN \
-  echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java7-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk7-installer
-
-
-# Directorio de trabajo
-WORKDIR /data
-
-# Variable JAVA
-ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 
 # ------- ------- ------- ------- ------- ------- -------
 # Instalo ElasticSearch
