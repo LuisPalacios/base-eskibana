@@ -14,7 +14,8 @@
 #  FROM dockerfile/java:oracle-java7
 #
 # Pull base image.
-FROM dockerfile/ubuntu
+#FROM dockerfile/ubuntu
+FROM ubuntu:14.04
 
 # Autor de este Dockerfile
 #
