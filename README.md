@@ -64,3 +64,9 @@ Es importante que prepares un directorio persistente para tus datos de elasticse
 
   - "/Apps/data/log/elasticsearch/data/:/data"
 
+Directorio persistente para configurar el Timezone. Crear el directorio /Apps/data/tz y dentro de él crear el fichero timezone. Luego montarlo con -v o con fig.yml
+
+    Montar:
+       "/Apps/data/tz:/config/tz"  
+    Preparar: 
+       $ echo "Europe/Madrid" > /config/tz/timezone
