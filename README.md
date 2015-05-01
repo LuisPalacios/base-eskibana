@@ -25,14 +25,14 @@ Consulta este [apunte técnico sobre varios servicios en contenedores Docker](ht
 
 Para usar esta imagen desde el registry de docker hub
 
-    totobo ~ $ docker pull luispa/base-fluentd
+    totobo ~ $ docker pull luispa/base-eskibana
 
 ### manualmente
 
 Si prefieres crear la imagen de forma manual en tu sistema, primero debes clonarla desde Github para luego ejecutar el build
 
-    $ git clone https://github.com/LuisPalacios/base-fluentd.git
-    $ docker build -t luispa/base-fluentd ./
+    $ git clone https://github.com/LuisPalacios/base-eskibana.git
+    $ docker build -t luispa/base-eskibana ./
 
 
 # Ejecución
@@ -41,7 +41,7 @@ Si prefieres crear la imagen de forma manual en tu sistema, primero debes clonar
 
 Puedes ejecutar "manulamente" el contenedor, es decir, de forma interactiva, que es muy útil para hacer pruebas. Aquí te dejo un "ejemplo":
 
-	  docker run -t -i -e FLUENTD_PORT=24224 -p 24224:24224 --name fluentd_1 --link eskibana_1:eskibana luispa/base-fluentd /bin/bash
+	  docker run -t -i -e FLUENTD_PORT=24224 -p 24224:24224 --name fluentd_1 --link eskibana_1:eskibana luispa/base-eskibana /bin/bash
 	 
 
 ## Arrancar con "fig"
