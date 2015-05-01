@@ -10,12 +10,11 @@
 #
 # Docker empezó a reemplazar imágenes 'dockerfile' con alternativas
 # oficiales, así que he decidido integrar oracle-java7 dentro de mi Dockerfile
-# Antiguo: 
-#  FROM dockerfile/java:oracle-java7
 #
-# Pull base image.
-#FROM dockerfile/ubuntu
-FROM ubuntu:14.04
+# FROM dockerfile/java:oracle-java7
+# FROM dockerfile/ubuntu
+# FROM ubuntu:14.04
+FROM debian:jessie
 
 # Autor de este Dockerfile
 #
@@ -73,14 +72,34 @@ WORKDIR /
 # Instalo java
 # ------- ------- ------- ------- ------- ------- -------
 #
-# Instalo Java
+# Método antiguo desde dockerfile/ubuntu
+#RUN \
+#  echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+#  add-apt-repository -y ppa:webupd8team/java && \
+#  apt-get update && \
+#  apt-get install -y oracle-java7-installer && \
+#  rm -rf /var/lib/apt/lists/* && \
+#  rm -rf /var/cache/oracle-jdk7-installer
+
+# Método nuevo, fuente: https://github.com/William-Yeh/docker-java7/blob/master/Dockerfile
 RUN \
-  echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java7-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk7-installer
+    echo "===> add webupd8 repository..."  && \
+    echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee /etc/apt/sources.list.d/webupd8team-java.list  && \
+    echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list  && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886  && \
+    apt-get update  && \
+    \
+    \
+    echo "===> install Java"  && \
+    echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections  && \
+    echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections  && \
+    DEBIAN_FRONTEND=noninteractive  apt-get install -y --force-yes oracle-java7-installer oracle-java7-set-default  && \
+    \
+    \
+    echo "===> clean up..."  && \
+    rm -rf /var/cache/oracle-jdk7-installer  && \
+    apt-get clean  && \
+    rm -rf /var/lib/apt/lists/*
 
 
 # Directorio de trabajo
